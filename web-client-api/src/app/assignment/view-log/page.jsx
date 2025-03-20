@@ -14,6 +14,7 @@ const mockLogs = Array.from({ length: 250 }, (_, i) => ({
 const DroneLogs = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const logsPerPage = 25;
+  const id =666;
 
   // เรียงข้อมูลจากล่าสุดไปเก่า
   const sortedLogs = mockLogs.sort(
@@ -69,14 +70,14 @@ const DroneLogs = () => {
       {/* title */}
       <div className='my-5 mx-auto'>
         <span className="text-rose-600 text-2xl font-bold" style={{ textShadow: "0 0 4px hsl(347, 77%, 50%)" }}>Page #3</span>
-        <span className="text-gray-700 dark:text-gray-300 text-2xl font-bold ml-4" >View log</span>
+        <span className="text-gray-700 dark:text-gray-300 text-2xl font-bold ml-4" >View log ID : {id}</span>
       </div>
 
       {/* table */}
       <div className="table-wrapper">
         <table className="drone-logs-table">
           <thead>
-            <tr className="text-gray-700 dark:text-gray-300 text-xl font-bold">
+            <tr className="text-gray-700 dark:text-gray-300  font-bold">
               <th className="pl-6">Created</th>
               <th>Country</th>
               <th>Drone ID</th>
@@ -163,9 +164,9 @@ const DroneLogs = () => {
         </div>
       )}
 
-        <div className="flex justify-between ml-10 mb-10 mt-5">
+        <div className="flex justify-between mx-10 mb-10 mt-5">
           <Link
-            className="middle none center mr rounded-lg py-3 px-6 font-sans text-sm md:text-base font-bold uppercase text-rose-700 shadow-md shadow-rose-500/20 transition-all hover:shadow-lg hover:shadow-rose-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none border-rose-700 border-2"
+            className="w-[100%] text-center sm:w-auto mr rounded-lg py-3 px-6 font-sans text-sm md:text-base font-bold uppercase text-rose-700 shadow-md shadow-rose-500/20 transition-all hover:shadow-lg hover:shadow-rose-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none border-rose-700 border-2"
             data-ripple-light="true"
             href="/assignment/temperature-log"
           >

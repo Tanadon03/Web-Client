@@ -113,7 +113,7 @@
 .card {
   padding: 2.5rem;
   background: hsla(var(--background), 0.6);
-  backdrop-filter: blur(2.3px);
+  backdrop-filter: blur(2.5px);
   border-radius: 1.2rem;
   width: auto;
   min-width: 350px;
@@ -148,6 +148,7 @@
   color: white;
   padding: 12px;
   text-align: center;
+  font-size: 18px;
   /* font-weight: 600; */
   /* border-radius: 3.5px; */
 }
