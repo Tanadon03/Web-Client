@@ -44,11 +44,9 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 100%; /* ขาว */
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -76,7 +74,7 @@
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
+    --background: 20 14.3% 4.1%; /* เทาเข้ม */
     --foreground: 0 0% 95%;
     --card: 24 9.8% 10%;
     --card-foreground: 0 0% 95%;
@@ -103,13 +101,133 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.card {
+  padding: 2.5rem;
+  background: hsla(var(--background), 0.6);
+  backdrop-filter: blur(2.3px);
+  border-radius: 1.2rem;
+  width: auto;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  border: 3.5px solid hsl(348, 83%, 47%);
+  overflow: hidden;
+}
+
+/* ตั้งค่าพื้นฐาน (เหมือนเดิม) */
+.drone-logs-container {
+  padding: 0;
+  height: 60%;
+  width: 80%;
+  max-width: 1200px;
+}
+
+
+.table-wrapper {
+  overflow-x: hidden;
+}
+
+.drone-logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  /* backdrop-filter: blur(2.3px); */
+}
+
+.drone-logs-table thead th {
+  background: hsl(348, 83%, 47%);
+  color: white;
+  padding: 12px;
+  text-align: center;
+  /* font-weight: 600; */
+  /* border-radius: 3.5px; */
+}
+
+/* .drone-logs-table tbody tr {
+  gap:5px;
+} */
+
+.drone-logs-table tbody tr:hover td {
+  background: hsla(348, 83%, 47%, 0.8);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.drone-logs-table tbody td {
+  /* padding: 10px; */
+  text-align: center;
+  border-bottom: 2px solid rgb(135, 135, 135,0.3);
+}
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: none;
+  background: rgba(0, 123, 255, 0.8);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: rgba(0, 123, 255, 1);
+}
+
+.pagination button:disabled {
+  background: rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
+}
+
+.pagination button.active {
+  background: rgba(0, 123, 255, 1);
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .drone-logs-table thead th,
+  .drone-logs-table tbody td {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .pagination button {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .drone-logs-table thead th,
+  .drone-logs-table tbody td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .pagination {
+    gap: 5px;
+  }
+
+  .pagination button {
+    padding: 4px 8px;
+    font-size: 12px;
   }
 }

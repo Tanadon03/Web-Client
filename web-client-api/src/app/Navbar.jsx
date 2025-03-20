@@ -27,13 +27,13 @@ return (
             </Link>
             <div className="hidden md:flex space-x-8 ml-7">
                 <Link href="/assignment/view-config" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
-                Page1
+                View
                 </Link>
                 <Link href="/assignment/temperature-log" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
-                Page2
+                Temperature
                 </Link>
                 <Link href="/assignment/view-log" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
-                Page3
+                View log
                 </Link>
             </div>
           </div>

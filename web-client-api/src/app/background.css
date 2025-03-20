@@ -18,7 +18,7 @@
   }
   
   .el {
-    position: fixed; /* ทำให้ background เป็นชั้นพื้นหลัง */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -32,12 +32,11 @@
       #4dffbf 288deg,
       hsla(0, 0%, 98%, 1) 360deg
     );
-    mask:
-      radial-gradient(circle at 50% 50%, white 2px, transparent 2.5px) 50% 50% / var(--size) var(--size),
+    mask: radial-gradient(circle at 50% 50%, white 2px, transparent 2.5px) 50% 50% / var(--size) var(--size),
       url("https://assets.codepen.io/605876/noise-mask.png") 256px 50% / 256px 256px;
     mask-composite: intersect;
     animation: flicker 20s infinite linear;
-    z-index: -1; /* วางไว้ด้านหลังเนื้อหา */
+    z-index: -1;
   }
   
   h1 {
