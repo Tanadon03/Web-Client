@@ -1,11 +1,8 @@
 "use client"
 import React from 'react'
-import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 import { Input } from "../../_component/Input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function ViewConfig() {
     const[data, setData] = useState({
