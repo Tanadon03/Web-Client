@@ -1,114 +1,145 @@
-"use client"
-import React from 'react'
-import { Button } from "@/components/ui/button";
+"use client";
+import React from "react";
 import { useState, useEffect } from "react";
-import Link from 'next/link';
-// import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import Loading from '../../_component/Loading';
 import { Input } from "../../_component/Input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 function TemperatureLog() {
-    const [data, setData] = useState({
-      drone_id: '',
-      drone_name: '',
-      light: '',
-      country: ''
-    });
+  // ดึงค่าจาก .env
+  const AuthorKey = process.env.NEXT_PUBLIC_API_KEY;
+  const LOGS_URL = process.env.NEXT_PUBLIC_LOGS_URL;
+  const DRONE_ID = process.env.NEXT_PUBLIC_DRONE_ID;
 
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setData(prevData => ({
-        ...prevData,
-        [name]: value
-      }));
-    };
+  const [data, setData] = useState({
+    drone_id: "",
+    drone_name: "",
+    country: "",
+  });
+  const [celsius, setCelsius] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [submitError, setSubmitError] = useState(null);
+  const [submitSuccess, setSubmitSuccess] = useState(null); // เพิ่ม state สำหรับแจ้งเตือนเมื่อส่งสำเร็จ
 
-    const handleSubmit =(e)=>{
-      e.preventDefault();
-      console.log(data);
-      const isAllFieldsFilled = 
-        data.drone_id !== null && 
-        data.drone_name.trim() !== '' && 
-        data.light.trim() !== '' && 
-        data.country.trim() !== '';
-
-      if (isAllFieldsFilled) {
-        console.log('All fields are filled:', data);
-      } else {
-        console.log('Please fill all fields:', data);
+  const fetchData = async () => {
+    console.log("Key:", AuthorKey);
+    try {
+      const response = await fetch(`${LOGS_URL}/${DRONE_ID}`); // ใช้ตัวแปรจาก .env
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const logs = await response.json();
+      console.log("Fetched logs:", logs);
+      const secondLog = logs[1];
+      if (secondLog) {
+        setData({
+          drone_id: secondLog.drone_id,
+          drone_name: secondLog.drone_name,
+          country: secondLog.country,
+        });
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Error fetching data:", error);
+      setError(error.message);
+      setIsLoading(true);
     }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitError(null);
+    setSubmitSuccess(null); // Reset success message
+
+    if (!celsius || !data.drone_id || !data.drone_name || !data.country) {
+      setSubmitError("Please fill in all required fields");
+      return;
+    }
+
+    const payload = {
+      drone_id: Number(data.drone_id),
+      drone_name: String(data.drone_name),
+      country: String(data.country),
+      celsius: Number(celsius),
+    };
+    console.log("Sending payload:", payload);
+
+    try {
+      const response = await fetch(LOGS_URL, { // ใช้ตัวแปรจาก .env
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${AuthorKey}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+      const result = await response.json();
+      console.log("Log submitted:", result);
+      setCelsius(""); // Reset input
+      setSubmitSuccess("Temperature log submitted successfully!"); // แจ้งเตือนเมื่อส่งสำเร็จ
+    } catch (error) {
+      console.log("Error submitting log:", error);
+      setSubmitError(error.message);
+    }
+  };
+
   return (
-    <div className="container mx-auto px-4 py-10 flex justify-center items-center md:mt-10 xl:mt-20">
-    <div className="card flex flex-col gap-5" >
-      <div>
-        <span className="text-rose-600 text-2xl font-bold" style={{ textShadow: "0 0 4px hsl(347, 77%, 50%)" }}>Page #2</span>
-        <span className="text-gray-700 dark:text-gray-300 text-2xl font-bold ml-4" >Temperature log</span>
+    <div className="container mx-auto px-4 py-10 flex flex-col justify-center items-center md:mt-10">
+      <div className='mb-10'>
+        <span className="text-rose-600 text-2xl font-bold" style={{ textShadow: "0 0 4px hsl(347, 77%, 50%)" }}>Drone Temperature</span>
       </div>
-      <hr></hr>
-      <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
-        {/* <Label className="text-xl">Drone ID</Label> */}
-        <Input 
-          type='number'
-          name="drone_id"
-          value={data.drone_id} 
-          placeholder='Enter Drone ID'
-          spanText='Drone ID'
-          onChange={handleChange}
-        />
-        {/* <Label className="text-xl">Drone Name</Label> */}
-        <Input
-          name="drone_name" 
-          value={data.drone_name} 
-          placeholder='Enter Drone Name'
-          spanText='Drone Name'
-          onChange={handleChange}
-        />
-        {/* <Label className="text-xl">Light</Label> */}
-        <Input 
-          name="light"
-          value={data.light} 
-          placeholder='Enter Light'
-          spanText='Light'
-          onChange={handleChange}
-
-        />
-        {/* <Label className="text-xl">Country</Label> */}
-        <Input 
-          name="country"
-          value={data.country} 
-          placeholder='Enter Country'
-          spanText='Country'
-          onChange={handleChange}
-        />
-        <button 
-            className="mt-5 middle none center rounded-lg bg-rose-600 py-3 px-6 font-sans text-sm md:text-base font-bold uppercase text-white shadow-md shadow-rose-500/20 transition-all hover:shadow-lg hover:shadow-rose-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            data-ripple-light="true"
-
-        >
-            Submit
-        </button>  
-      </form>
-
-      <div className='flex justify-between'>
-          <Link
-            className="middle none center mr rounded-lg py-3 px-6 font-sans text-sm md:text-base font-bold uppercase text-rose-700 shadow-md shadow-rose-500/20 transition-all hover:shadow-lg hover:shadow-rose-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none border-rose-700 border-2"
-            data-ripple-light="true"
-            href="/assignment/view-config"
-          >
-            back
-          </Link> 
-          <Link
-            className="middle none center rounded-lg bg-rose-600 py-3 px-6 font-sans text-sm md:text-base font-bold uppercase text-white shadow-md shadow-rose-500/20 transition-all hover:shadow-lg hover:shadow-rose-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            data-ripple-light="true"
-            href="/assignment/view-log"
-          >
-            next
-          </Link>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="card flex flex-col gap-5">
+          <span className="text-gray-700 dark:text-gray-300 text-xl font-bold ml-4 text-center" >Insert Temperature</span>
+          <hr />
+          {submitError && <div className="text-red-500">{submitError}</div>}
+          {submitSuccess && <div className="text-green-500">{submitSuccess}</div>}
+          <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+            <Input
+              type="number"
+              name="celsius"
+              value={celsius}
+              onChange={(e) => setCelsius(e.target.value)}
+              placeholder="Enter Temperature"
+              spanText="Temperature"
+              required
+            />
+            <button
+              className="mt-5 middle none center rounded-lg bg-rose-600 py-3 px-6 font-sans text-sm md:text-base font-bold uppercase text-white shadow-md shadow-rose-500/20 transition-all hover:shadow-lg hover:shadow-rose-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+          <div className="flex justify-between">
+            <Link
+              className="middle none center mr rounded-lg py-3 px-6 font-sans text-sm md:text-base font-bold uppercase text-rose-700 shadow-md shadow-rose-500/20 transition-all hover:shadow-lg hover:shadow-rose-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none border-rose-700 border-2"
+              href="/assignment/view-config"
+            >
+              Back
+            </Link>
+            <Link
+              className="middle none center rounded-lg bg-rose-600 py-3 px-6 font-sans text-sm md:text-base font-bold uppercase text-white shadow-md shadow-rose-500/20 transition-all hover:shadow-lg hover:shadow-rose-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              href="/assignment/view-log"
+            >
+              Next
+            </Link>
+          </div>
         </div>
+      )}
     </div>
-    </div> 
-  )
+  );
 }
 
-export default TemperatureLog
+export default TemperatureLog;

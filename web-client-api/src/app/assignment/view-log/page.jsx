@@ -1,42 +1,59 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Loading from '../../_component/Loading';
 
-// Mockup JSON Data (สมมติข้อมูลมากกว่า 25 รายการ)
-const mockLogs = Array.from({ length: 250 }, (_, i) => ({
-  created: `2024-09-22 07:${37 - i}:32.111Z`,
-  country: "Pakistan",
-  droneId: 3001,
-  droneName: "Dot Dot",
-  celsius: 45 - (i % 5),
-}));
 
 const DroneLogs = () => {
+  // ดึงค่าจาก .env
+  const LOGS_URL = process.env.NEXT_PUBLIC_LOGS_URL;
+  const DRONE_ID = process.env.NEXT_PUBLIC_DRONE_ID;
+
+  const [isLoading, setIsLoading] = useState(true); // Changed to isLoading for clarity
+  const [logs, setLogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const logsPerPage = 25;
-  const id =666;
 
-  // เรียงข้อมูลจากล่าสุดไปเก่า
-  const sortedLogs = mockLogs.sort(
+  const fetchLogs = async () => {
+    try {
+      const response = await fetch(`${LOGS_URL}/${DRONE_ID}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const fetchedLogs = await response.json();
+      console.log("Fetched logs:", fetchedLogs);
+      // เก็บทั้ง array ของ logs
+      setLogs(fetchedLogs); // fetchedLogs ควรเป็น array เช่น [{...}, {...}]
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Error fetching data:", error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
+  // Sort logs
+  const sortedLogs = [...logs].sort(
     (a, b) => new Date(b.created) - new Date(a.created)
   );
 
-  // คำนวณจำนวนหน้าทั้งหมด
+  // Calculate pagination
   const totalPages = Math.ceil(sortedLogs.length / logsPerPage);
-
-  // ดึงข้อมูลสำหรับหน้าปัจจุบัน
   const indexOfLastLog = currentPage * logsPerPage;
   const indexOfFirstLog = indexOfLastLog - logsPerPage;
   const currentLogs = sortedLogs.slice(indexOfFirstLog, indexOfLastLog);
 
-  // ฟังก์ชันเปลี่ยนหน้า
+  // Page navigation function
   const goToPage = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
 
-  // สร้างปุ่มตัวเลขหน้า (แสดง 4 หน้าใกล้เคียง)
+  // Render page numbers
   const renderPageNumbers = () => {
     const pageNumbers = [];
     const maxPagesToShow = 3;
@@ -65,12 +82,18 @@ const DroneLogs = () => {
   };
 
   return (
-    <div className="card drone-logs-container mt-10 xl:mt-20 mb-10 xl:mb-20 mx-auto">
+    <div className="container mx-auto px-4 py-10 flex flex-col justify-center items-center md:mt-10">
+      <div className='mb-10'>
+        <span className="text-rose-600 text-2xl font-bold" style={{ textShadow: "0 0 4px hsl(347, 77%, 50%)" }}>Drone Log</span>
+      </div>
+      {isLoading ? (
+        <Loading /> // Assuming you have a Loading component imported
+      ) : (
+      <div className="card drone-logs-container mx-auto">
 
       {/* title */}
       <div className='my-5 mx-auto'>
-        <span className="text-rose-600 text-2xl font-bold" style={{ textShadow: "0 0 4px hsl(347, 77%, 50%)" }}>Page #3</span>
-        <span className="text-gray-700 dark:text-gray-300 text-2xl font-bold ml-4" >View log ID : {id}</span>
+      <span className="text-gray-700 dark:text-gray-300 text-xl font-bold ml-4 text-center" >Log from ID : {DRONE_ID}</span>
       </div>
 
       {/* table */}
@@ -93,8 +116,8 @@ const DroneLogs = () => {
               >
                 <td className="py-3" >{new Date(log.created).toLocaleString()}</td>
                 <td>{log.country}</td>
-                <td>{log.droneId}</td>
-                <td>{log.droneName}</td>
+                <td>{log.drone_id}</td>
+                <td>{log.drone_name}</td>
                 <td>{log.celsius}°C</td>
               </tr>
             ))}
@@ -174,7 +197,10 @@ const DroneLogs = () => {
           </Link>
         </div>
 
+      </div>
+      )}
     </div>
+    
   );
 };
 

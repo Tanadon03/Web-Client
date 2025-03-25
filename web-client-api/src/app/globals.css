@@ -1,9 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
 @import "tailwindcss";
-
 @plugin "tailwindcss-animate";
-
 @custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -99,6 +97,10 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  html, body {
+    font-family: 'Space Mono', monospace !important;
+  }
 }
 
 @layer base {
@@ -113,15 +115,20 @@
 .card {
   padding: 2.5rem;
   background: hsla(var(--background), 0.6);
-  backdrop-filter: blur(2.5px);
+  backdrop-filter: blur(3px);
   border-radius: 1.2rem;
-  width: auto;
+  width: 550px;
   min-width: 350px;
   display: flex;
   flex-direction: column;
-  border: 3.5px solid hsl(348, 83%, 47%);
   overflow: hidden;
+  /* border: 1px soid hsla(348, 83%, 47%, 0.8); */
+  
+  /* Box Shadow for Light/Dark Theme */
+  box-shadow: 0 0px 10px hsla(348, 83%, 47%, 0.8),
+              0 0px 10px hsla(348, 83%, 47%, 0.8);
 }
+
 
 /* ตั้งค่าพื้นฐาน (เหมือนเดิม) */
 .drone-logs-container {
@@ -162,38 +169,103 @@
   border-bottom: 2px solid rgb(135, 135, 135,0.3);
 }
 
-/* Pagination Styles */
-.pagination {
+.loader {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin-top: 20px;
 }
 
-.pagination button {
-  padding: 8px 12px;
-  border: none;
-  background: rgba(0, 123, 255, 0.8);
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
+.bar {
+  display: inline-block;
+  width: 5px;
+  height: 20px;
+  background-color: rgb(219, 20, 60, .5);
+  border-radius: 10px;
+  animation: scale-up4 1s linear infinite;
 }
 
-.pagination button:hover:not(:disabled) {
-  background: rgba(0, 123, 255, 1);
+.bar:nth-child(1) {
+  animation-delay: .25s;
 }
 
-.pagination button:disabled {
-  background: rgba(0, 0, 0, 0.2);
-  cursor: not-allowed;
+.bar:nth-child(2) {
+  animation-delay: .35s;
+  height: 35px;
+  margin: 0 0 0 5px;
 }
 
-.pagination button.active {
-  background: rgba(0, 123, 255, 1);
+.bar:nth-child(3) {
+  animation-delay: .45s;
+  height: 45px;
+  margin: 0 5px;
+}
+
+.bar:nth-child(4) {
+  animation-delay: .55s;
+  height: 35px;
+  margin: 0 5px 0 0;
+}
+
+.bar:nth-child(5) {
+  animation-delay: .65s;
+}
+
+/* สไตล์สำหรับ container ของ Nav Bar */
+.hidden.md\:flex {
+  display: none; 
+}
+
+@media (min-width: 768px) {
+  .hidden.md\:flex {
+    display: flex; 
+  }
+}
+
+/* สไตล์สำหรับลิงก์ใน Nav Bar (ใช้คลาส nav) */
+.nav {
+  position: relative; 
   font-weight: bold;
+  padding: 0.5rem 1.2rem 0.2rem 1.2rem;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
 }
+
+/* สร้าง border-bottom ด้วย pseudo-element */
+.nav::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: hsla(348, 83%, 47%, 0.8); 
+  transition: width 0.3s ease;
+}
+
+.nav:hover::after {
+  width: 100%; 
+}
+
+
+.nav:hover {
+  color: hsla(348, 83%, 47%, 0.8); 
+}
+
+/* สไตล์สำหรับเมนูที่ active */
+.nav.active {
+  color: hsla(348, 83%, 47%, 0.8); 
+}
+
+@keyframes scale-up4 {
+  20% {
+    background-color: hsl(348, 83%, 47%);
+    transform: scaleY(1.5);
+  }
+
+  40% {
+    transform: scaleY(1);
+  }
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -206,6 +278,9 @@
   .pagination button {
     padding: 6px 10px;
     font-size: 14px;
+  }
+    .card {
+    width:auto;
   }
 }
 
@@ -224,4 +299,6 @@
     padding: 4px 8px;
     font-size: 12px;
   }
+
+
 }
