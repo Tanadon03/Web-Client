@@ -34,7 +34,7 @@ return (
                   pathname === "/assignment/view-config" ? "active" : ""
                 }`}
               >
-                View
+                Configuration
               </Link>
               <Link
                 href="/assignment/temperature-log"
@@ -50,7 +50,7 @@ return (
                   pathname === "/assignment/view-log" ? "active" : ""
                 }`}
               >
-                View log
+                logs
               </Link>
             </div>
           </div>
@@ -90,7 +90,7 @@ return (
                   }`}
                   onClick={() => setIsOpen(!isOpen)}
                 >
-                  View
+                  Configuration
                 </Link>
                 <Link
                   href="/assignment/temperature-log"
@@ -110,7 +110,7 @@ return (
                   onClick={() => setIsOpen(!isOpen)}
 
                 >
-                  View log
+                  logs
                 </Link>
                 <Button
                   variant="ghost"
