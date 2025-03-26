@@ -65,12 +65,25 @@ return (
             </Button>
           </div>
 
+          
+
           <div className="md:hidden flex items-center">
+            <Button
+                  variant="ghost"
+                  size="icon"
+                  className="nav text-gray-700 dark:text-gray-300 transition"
+                  onClick={() => {
+                    toggleTheme(); // เรียกฟังก์ชันสลับธีม
+                    setIsOpen(!isOpen); // เรียกฟังก์ชันสลับสถานะเปิด/ปิด
+                  }}
+                >
+                  {theme === "light" ? <Moon className="h-7 w-7" /> : <Sun className="h-7 w-7" />}
+                </Button>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 dark:text-gray-300"
+              className="nav text-gray-700 dark:text-gray-300 transition"
             >
               {isOpen ? <X className="h-9 w-9" /> : <Menu className="h-9 w-9" />}
             </Button>
@@ -112,17 +125,6 @@ return (
                 >
                   logs
                 </Link>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="nav text-gray-700 dark:text-gray-300 transition"
-                  onClick={() => {
-                    toggleTheme(); // เรียกฟังก์ชันสลับธีม
-                    setIsOpen(!isOpen); // เรียกฟังก์ชันสลับสถานะเปิด/ปิด
-                  }}
-                >
-                  {theme === "light" ? <Moon className="h-7 w-7" /> : <Sun className="h-7 w-7" />}
-                </Button>
               </div>
             </div>
           </div>

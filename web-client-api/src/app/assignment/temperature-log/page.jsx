@@ -101,18 +101,18 @@ function TemperatureLog() {
         <Loading />
       ) : (
         <div className="card flex flex-col gap-5">
-          <span className="text-gray-700 dark:text-gray-300 text-xl font-bold ml-4 text-center" >Insert Temperature</span>
+          <span className="text-gray-700 dark:text-gray-300 text-xl font-bold ml-4 text-center" >Insert Temperature to {DRONE_ID}</span>
           <hr />
-          {submitError && <div className="text-red-500">{submitError}</div>}
-          {submitSuccess && <div className="text-green-500">{submitSuccess}</div>}
+          {submitError && <div className="text-red-500 text-center">{submitError}</div>}
+          {submitSuccess && <div className="text-green-500 text-center">{submitSuccess}</div>}
           <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
             <Input
               type="number"
               name="celsius"
               value={celsius}
               onChange={(e) => setCelsius(e.target.value)}
-              placeholder="Enter Temperature"
-              spanText="Temperature"
+              placeholder="Enter Temperature (°C)"
+              spanText="Temperature (°C)"
               required
             />
             <button
