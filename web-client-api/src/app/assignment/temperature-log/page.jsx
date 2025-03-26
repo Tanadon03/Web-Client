@@ -22,7 +22,6 @@ function TemperatureLog() {
   const [submitSuccess, setSubmitSuccess] = useState(null); 
 
   const fetchData = async () => {
-    console.log("Key:", AuthorKey);
     try {
       const response = await fetch(`${LOGS_URL}/${DRONE_ID}`);
       if (!response.ok) {
