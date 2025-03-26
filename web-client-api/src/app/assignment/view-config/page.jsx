@@ -8,20 +8,20 @@ import { Input } from "../../_component/Input";
 function ViewConfig() {
   const [isError, setIsError] = useState(true);
   const [data, setData] = useState([]);
-  const CONFIG_URL = process.env.NEXT_PUBLIC_CONFIG_URL; // เช่น http://localhost:5000/logs
-  const DRONE_ID = process.env.NEXT_PUBLIC_CONFIG_ID; // เช่น 65010468
+  const CONFIG_URL = process.env.NEXT_PUBLIC_CONFIG_URL;
+  const DRONE_ID = process.env.NEXT_PUBLIC_CONFIG_ID;
 
 
   const fetchData = async () => {
     try {
       const response = await fetch(`${CONFIG_URL}/${DRONE_ID}`)
-      const jsonData = await response.json(); // Parse the JSON from the response
+      const jsonData = await response.json(); 
       console.log("data:", jsonData);
-      setData(jsonData); // Set the parsed data
+      setData(jsonData);
       setIsError(false);
     } catch (error) {
       console.log("error:", error);
-      setIsError(true); // Set error state to true on failure
+      setIsError(true);
     }
   };
   
@@ -40,7 +40,7 @@ function ViewConfig() {
       ) : (
       <div className='card'>
         <div
-          className="flex flex-col gap-6" // คง opacity 30% ใน dark mode
+          className="flex flex-col gap-6"
         >
           <span className="text-gray-700 dark:text-gray-300 text-xl font-bold ml-4 text-center" >ID : {DRONE_ID}</span>
           <hr></hr>
@@ -52,7 +52,6 @@ function ViewConfig() {
               spanText='Drone ID'
               readOnly
             />
-            {/* <Label className="text-xl">Drone Name</Label> */}
             <Input
               name="drone_name" 
               value={data.drone_name} 
@@ -60,7 +59,6 @@ function ViewConfig() {
               spanText='Drone Name'
               readOnly
             />
-            {/* <Label className="text-xl">Light</Label> */}
             <Input 
               name="light"
               value={data.light} 
@@ -68,7 +66,6 @@ function ViewConfig() {
               spanText='Light'
               readOnly
             />
-            {/* <Label className="text-xl">Country</Label> */}
             <Input 
               name="country"
               value={data.country} 

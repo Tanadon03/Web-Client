@@ -5,11 +5,10 @@ import Loading from '../../_component/Loading';
 
 
 const DroneLogs = () => {
-  // ดึงค่าจาก .env
   const LOGS_URL = process.env.NEXT_PUBLIC_LOGS_URL;
   const DRONE_ID = process.env.NEXT_PUBLIC_DRONE_ID;
 
-  const [isLoading, setIsLoading] = useState(true); // Changed to isLoading for clarity
+  const [isLoading, setIsLoading] = useState(true);
   const [logs, setLogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const logsPerPage = 25;
@@ -22,8 +21,7 @@ const DroneLogs = () => {
       }
       const fetchedLogs = await response.json();
       console.log("Fetched logs:", fetchedLogs);
-      // เก็บทั้ง array ของ logs
-      setLogs(fetchedLogs); // fetchedLogs ควรเป็น array เช่น [{...}, {...}]
+      setLogs(fetchedLogs);
       setIsLoading(false);
     } catch (error) {
       console.log("Error fetching data:", error);
@@ -87,7 +85,7 @@ const DroneLogs = () => {
         <span className="text-rose-600 text-2xl font-bold" style={{ textShadow: "0 0 4px hsl(347, 77%, 50%)" }}>Drone Log</span>
       </div>
       {isLoading ? (
-        <Loading /> // Assuming you have a Loading component imported
+        <Loading />
       ) : (
       <div className="card drone-logs-container mx-auto">
 

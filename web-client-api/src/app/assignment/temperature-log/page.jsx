@@ -18,14 +18,13 @@ function TemperatureLog() {
   });
   const [celsius, setCelsius] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [submitError, setSubmitError] = useState(null);
-  const [submitSuccess, setSubmitSuccess] = useState(null); // เพิ่ม state สำหรับแจ้งเตือนเมื่อส่งสำเร็จ
+  const [submitSuccess, setSubmitSuccess] = useState(null); 
 
   const fetchData = async () => {
     console.log("Key:", AuthorKey);
     try {
-      const response = await fetch(`${LOGS_URL}/${DRONE_ID}`); // ใช้ตัวแปรจาก .env
+      const response = await fetch(`${LOGS_URL}/${DRONE_ID}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -42,7 +41,6 @@ function TemperatureLog() {
       setIsLoading(false);
     } catch (error) {
       console.log("Error fetching data:", error);
-      setError(error.message);
       setIsLoading(true);
     }
   };
@@ -70,7 +68,7 @@ function TemperatureLog() {
     console.log("Sending payload:", payload);
 
     try {
-      const response = await fetch(LOGS_URL, { // ใช้ตัวแปรจาก .env
+      const response = await fetch(LOGS_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +83,7 @@ function TemperatureLog() {
       const result = await response.json();
       console.log("Log submitted:", result);
       setCelsius(""); // Reset input
-      setSubmitSuccess("Temperature log submitted successfully!"); // แจ้งเตือนเมื่อส่งสำเร็จ
+      setSubmitSuccess("Temperature log submitted successfully!");
     } catch (error) {
       console.log("Error submitting log:", error);
       setSubmitError(error.message);

@@ -12,9 +12,9 @@
   }
   
   body {
-    min-height: 100vh; /* คงความสูงขั้นต่ำ */
-    background: hsl(var(--background)); /* ใช้สีจาก globals.css */
-    margin: 0; /* ป้องกัน margin default */
+    min-height: 100vh;
+    background: hsl(var(--background));
+    margin: 0;
   }
   
   .el {
@@ -40,7 +40,7 @@
   }
   
   h1 {
-    position: relative; /* เปลี่ยนจาก fixed เป็น relative เพื่อให้อยู่ใน flow */
+    position: relative;
     margin: 0;
     font-size: clamp(6rem, 8vw + 1rem, 14rem);
     font-family: "Geist", sans-serif;
